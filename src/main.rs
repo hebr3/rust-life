@@ -1,12 +1,15 @@
 extern crate rand;
-use std::{thread, time};
-use rand::Rng;
+
+const WIDTH: usize = 5;
+const HEIGHT: usize = 4;
+
+type World = [[u8; WIDTH]; HEIGHT];
 
 fn main() {
-    let mut world = [[0u8; 75]; 75];
+    let mut world: World = [[0u8; WIDTH]; HEIGHT];
     let mut generations = 0;
-    for i in 0..74 {
-        for j in 0..74 {
+    for i in 0..HEIGHT {
+        for j in 0..WIDTH {
             if rand::random() {
                 world[i][j] = 1;
             } else {
@@ -14,56 +17,56 @@ fn main() {
             }
         }
     }
-    for i in 0..100 {
-        let c = census(world);
-        println!("generation {} population count count: {}", generations, c);
+    let mut census_count = census(world);
+    while census_count > 0 && generations < 10 {
+        census_count = census(world);
+        print_world(world);
+        println!("generation {} population count count: {}", generations, census_count);
         world = generation(world);
         generations += 1;
     }
 }
 
-fn census(_world: [[u8; 75]; 75]) -> u16 {
-    let mut count = 0;
+fn census(_world: World) -> u16 {
+    let mut count: u16 = 0;
 
-    for i in 0..74 {
-        for j in 0..74 {
-            if _world[i][j] == 1 {
-                count += 1;
-            }
+    for row in _world {
+        for val in row {
+            count += u16::from(val);
         }
     }
     count
 }
 
-fn generation(world: [[u8; 75]; 75]) -> [[u8; 75]; 75] {
-    let mut newworld = [[0u8; 75]; 75];
+fn generation(world: World) -> World {
+    let mut newworld = [[0u8; WIDTH]; HEIGHT];
  
-    for i in 0..74 {
-        for j in 0..74 {
+    for i in 0..HEIGHT-1 {
+        for j in 0..WIDTH-1 {
             let mut count = 0;
             if i>0 {
-                count = count + world[i-1][j];
+                count += world[i-1][j];
             }
             if i>0 && j>0 {
-                count = count + world[i-1][j-1];
+                count += world[i-1][j-1];
             }
             if i>0 && j<74 {
-                count = count + world[i-1][j+1];
+                count += world[i-1][j+1];
             }
             if i<74 && j>0 {
-                count = count + world[i+1][j-1]
+                count += world[i+1][j-1]
             }
             if i<74 {
-                count = count + world[i+1][j];
+                count += world[i+1][j];
             }
             if i<74 && j<74 {
-                count = count + world[i+1][j+1];
+                count += world[i+1][j+1];
             }
             if j>0 {
-                count = count + world[i][j-1];
+                count += world[i][j-1];
             }
             if j<74 {
-                count = count + world[i][j+1];
+                count += world[i][j+1];
             }
  
             newworld[i][j] = 0;
@@ -80,4 +83,10 @@ fn generation(world: [[u8; 75]; 75]) -> [[u8; 75]; 75] {
         }
     }
     newworld
+}
+
+fn print_world(_world: World) {
+    for y in _world {
+        println!("{:?}", y);
+    }
 }
