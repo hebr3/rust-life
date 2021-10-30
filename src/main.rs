@@ -48,13 +48,13 @@ fn generation(world: World) -> World {
         for j in 0..WIDTH {
             let cell = world[i][j];
             let nw = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH - 1) % WIDTH];
-            let n = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH) % WIDTH];
+            let n  = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH - 0) % WIDTH];
             let ne = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH + 1) % WIDTH];
-            let e = world[(i + HEIGHT) % HEIGHT][(j + WIDTH + 1) % WIDTH];
+            let e  = world[(i + HEIGHT - 0) % HEIGHT][(j + WIDTH + 1) % WIDTH];
             let se = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH + 1) % WIDTH];
-            let s = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH) % WIDTH];
+            let s  = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH + 0) % WIDTH];
             let sw = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH - 1) % WIDTH];
-            let w = world[(i + HEIGHT) % HEIGHT][(j + WIDTH - 1) % WIDTH];
+            let w  = world[(i + HEIGHT + 0) % HEIGHT][(j + WIDTH - 1) % WIDTH];
 
             let count = nw + n + ne + e + se + s + sw + w;
             newworld[i][j] = 0;
