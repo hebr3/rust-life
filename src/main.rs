@@ -21,7 +21,10 @@ fn main() {
     while census_count > 0 && generations < 10 {
         census_count = census(world);
         print_world(world);
-        println!("generation {} population count count: {}", generations, census_count);
+        println!(
+            "generation {} population count count: {}",
+            generations, census_count
+        );
         world = generation(world);
         generations += 1;
     }
@@ -40,23 +43,23 @@ fn census(_world: World) -> u16 {
 
 fn generation(world: World) -> World {
     let mut newworld = [[0u8; WIDTH]; HEIGHT];
- 
+
     for i in 0..HEIGHT {
         for j in 0..WIDTH {
             let cell = world[i][j];
-            let nw = world[(i+HEIGHT-1) % HEIGHT][(j+WIDTH-1) % WIDTH];
-            let n = world[(i+HEIGHT-1) % HEIGHT][(j+WIDTH) % WIDTH];
-            let ne = world[(i+HEIGHT-1) % HEIGHT][(j+WIDTH+1) % WIDTH];
-            let e = world[(i+HEIGHT) % HEIGHT][(j+WIDTH+1) % WIDTH];
-            let se = world[(i+HEIGHT+1) % HEIGHT][(j+WIDTH+1) % WIDTH];
-            let s = world[(i+HEIGHT+1) % HEIGHT][(j+WIDTH) % WIDTH];
-            let sw = world[(i+HEIGHT+1) % HEIGHT][(j+WIDTH-1) % WIDTH];
-            let w = world[(i+HEIGHT) % HEIGHT][(j+WIDTH-1) % WIDTH];
- 
+            let nw = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH - 1) % WIDTH];
+            let n = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH) % WIDTH];
+            let ne = world[(i + HEIGHT - 1) % HEIGHT][(j + WIDTH + 1) % WIDTH];
+            let e = world[(i + HEIGHT) % HEIGHT][(j + WIDTH + 1) % WIDTH];
+            let se = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH + 1) % WIDTH];
+            let s = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH) % WIDTH];
+            let sw = world[(i + HEIGHT + 1) % HEIGHT][(j + WIDTH - 1) % WIDTH];
+            let w = world[(i + HEIGHT) % HEIGHT][(j + WIDTH - 1) % WIDTH];
+
             let count = nw + n + ne + e + se + s + sw + w;
             newworld[i][j] = 0;
- 
-            if (count <2) && (cell == 1) {
+
+            if (count < 2) && (cell == 1) {
                 newworld[i][j] = 0;
             }
             if cell == 1 && (count == 2 || count == 3) {
